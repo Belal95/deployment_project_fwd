@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "be-install": "cd backend && npm install",
+    "fe-install": "cd frontend && npm install",
+    "be-build": "cd backend && npm run build",
+    "fe-build": "cd frontend && npm run build",
+    "be-test": "cd backend && npm run test",
+    "fe-test": "cd frontend && npm run test",
+    "be-deploy": "cd backend/www && eb init deployment_project -r $AWS_DEFAULT_REGION -p node.js && eb use Deploymentproject-env && eb setenv POSTGRES_HOST=$POSTGRES_HOST POSTGRES_DB=$POSTGRES_DB POSTGRES_USER=$POSTGRES_USER POSTGRES_PASSWORD=$POSTGRES_PASSWORD BYCRYPT_PASSWORD=$BYCRYPT_PASSWORD JWT_SECRET=$JWT_SECRET SALT_ROUNDS=$SALT_ROUNDS ENV=$ENV PORT=$PORT && eb deploy ",
+    "fe-deploy": "aws s3 cp frontend/build s3://my-bucketddd123 --recursive"
+  },
+  "devDependencies": {}
+}

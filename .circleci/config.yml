@@ -1,0 +1,52 @@
+version: 2.1
+orbs:
+  node: cicleci/npde@5.2.0
+  aws-cli: circleci/aws-cli@3.1.1
+  eb: circleci/aws-elastic-beanstalk@2.1.0
+
+jobs:
+  CICD:
+    docker:
+      - image: "cimg/node:16.15.0"
+    steps:
+      - node/install
+      - checkout
+      - eb/setup
+      - aws-cli/install
+      - aws-cli/setup:
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          aws-region: AWS_REGION
+
+      - run:
+          name: Install Frontend dependencies
+          command: npm run fe-install
+      - run:
+          name: Install Backend dependencies
+          command: npm run be-install
+      - run:
+          name: Frontend build
+          command: npm run fe-build
+      - run:
+          name: Backend build
+          command: npm run be-build
+      - run:
+          name: Frontend test
+          command: npm run fe-test
+      - run:
+          name: Backend test
+          command: npm run be-test
+      - run:
+          name: Frontend deploy
+          command: npm run fe-deploy
+      - run:
+          name: Backedn deploy
+          command: nom run be-deploy
+
+workflows:
+  build-deploy:
+    jobs:
+      CICD:
+        filters:
+          branches:
+            only: [main]
