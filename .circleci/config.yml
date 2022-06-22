@@ -1,8 +1,8 @@
 version: 2.1
 orbs:
-  node: cicleci/npde@5.2.0
-  aws-cli: circleci/aws-cli@3.1.1
-  eb: circleci/aws-elastic-beanstalk@2.1.0
+  node: circleci/node@4.1.0
+  aws-cli: circleci/aws-cli@1.3.1
+  eb: circleci/aws-elastic-beanstalk@1.0.0
 
 jobs:
   CICD:
@@ -16,7 +16,7 @@ jobs:
       - aws-cli/setup:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          aws-region: AWS_REGION
+          aws-region: AWS_DEFAULT_REGION
 
       - run:
           name: Install Frontend dependencies
@@ -46,7 +46,7 @@ jobs:
 workflows:
   build-deploy:
     jobs:
-      CICD:
+      - CICD:
         filters:
           branches:
             only: [main]
